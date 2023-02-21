@@ -71,7 +71,7 @@ public class App extends modeGamePlay {
                 System.out.println("Hard mode");
             }
             // image Backgroud
-            imgBackground = new ImageIcon("C:/Users/Petch/OneDrive/Desktop/Java Y1T2/Gui/Project/ProjectOOP/Game_puzzle/picture/background/image_part_001.jpg");
+            imgBackground = new ImageIcon("Game_puzzle/picture/background/image_part_001.jpg");
 
         } catch (Exception e) {
             System.out.println(e);
@@ -160,6 +160,7 @@ public class App extends modeGamePlay {
         else if (mode == "Normal") answerOfNormal();
         else answerOfHard();    
     }
+    // function test
     private void autoplay() {
         isClicked = 99;
     }
@@ -202,6 +203,7 @@ public class App extends modeGamePlay {
         @Override
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
+            // อันนี้คือของจริง
             // if ((source == btnpuzzle[0]) && (!isClicked)) {
             //     btnpuzzle[0].setIcon(imgPuzzle(0));
             //     isClicked = true;
@@ -220,6 +222,7 @@ public class App extends modeGamePlay {
             // } else if (source == btnNewGame) {
             //     newGame();
             // }
+            // อันนี้คือเอาไว้ Test
             if ((source == btnpuzzle[0]) && (isClicked > 0)) {
                 btnpuzzle[0].setIcon(imgPuzzle(0));
                 isClicked--;
