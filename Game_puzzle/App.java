@@ -39,6 +39,10 @@ public class App {
     private Icon imgBicycle2;
     private Icon imgBicycle3;
     private Icon imgBicycle4;
+    private Icon img01bird1;
+    private Icon img01bird2;
+    private Icon img01bird3;
+    private Icon img01bird4;
     private Icon imgBackground;
     private int score;
     private int guess;
@@ -73,6 +77,10 @@ public class App {
             imgCar2 = new ImageIcon("Game_puzzle/picture/car/image_part_002.jpg");
             imgCar3 = new ImageIcon("Game_puzzle/picture/car/image_part_003.jpg");
             imgCar4 = new ImageIcon("Game_puzzle/picture/car/image_part_004.jpg");
+            img01bird1 = new ImageIcon("Game_puzzle/picture/bird01/image_part_001.jpg");
+            img01bird2 = new ImageIcon("Game_puzzle/picture/bird01/image_part_002.jpg");
+            img01bird3 = new ImageIcon("Game_puzzle/picture/bird01/image_part_003.jpg");
+            img01bird4 = new ImageIcon("Game_puzzle/picture/bird01/image_part_004.jpg");
             
         } catch(Exception e){
             System.out.println(e);
@@ -165,20 +173,34 @@ public class App {
         else if(answer == "CAR" && idx==1) ansImg = imgCar2;
         else if(answer == "CAR" && idx==2) ansImg = imgCar3;
         else if(answer == "CAR" && idx==3) ansImg = imgCar4;
+        else if (answer == "BIRD" && idx == 0)
+            ansImg = img01bird1;
+        else if (answer == "BIRD" && idx == 1)
+            ansImg = img01bird2;
+        else if (answer == "BIRD" && idx == 2)
+            ansImg = img01bird3;
+        else if (answer == "BIRD" && idx == 3)
+            ansImg = img01bird4;
         // if (ans == "cat") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgCat[i]);};}
         // if (ans == "puppy") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgPuppy[i]);};}
         // if (ans == "bicycle") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgBicycle[i]);};}
         // if (ans == "car") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgCar[i]);};}
         return ansImg;
     }
-    private void ans(){
-        String[] puzzle = {"CAT", "PUPPY", "BICYCLE", "CAR"};
-        int rd = (int)(Math.random() * 4);
-        if(puzzle[rd]=="CAT") answer = "CAT";
-        else if(puzzle[rd]=="PUPPY") answer = "PUPPY";
-        else if(puzzle[rd]=="BICYCLE") answer = "BICYCLE";
-        else if(puzzle[rd]=="CAR") answer = "CAR"; 
-        
+       private void ans() {
+        String[] puzzle = { "CAT", "PUPPY", "BICYCLE", "CAR", "BIRD" };
+        int rd = (int) (Math.random() * 5);
+        if (puzzle[rd] == "CAT")
+            answer = "CAT";
+        else if (puzzle[rd] == "PUPPY")
+            answer = "PUPPY";
+        else if (puzzle[rd] == "BICYCLE")
+            answer = "BICYCLE";
+        else if (puzzle[rd] == "CAR")
+            answer = "CAR";
+        else if (puzzle[rd] == "BIRD")
+            answer = "BIRD";
+
     }
     // class for check the answer
     private class ChecktheAnswer implements ActionListener{
