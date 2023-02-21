@@ -13,248 +13,231 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 
-public class App {
+public class App extends modeGamePlay {
     private JFrame f;
-    // private JLabel lbLogo;
     private JButton btnPlay;
     private JButton[] btnpuzzle;
     private JTextField tfAnswer;
     private JButton btnSubmit;
     private JLabel lbScore;
     private JButton btnNewGame;
-    private Icon img1;
-    private Icon imgCat1;
-    private Icon imgCat2;
-    private Icon imgCat3;
-    private Icon imgCat4;
-    private Icon imgPuppy1;
-    private Icon imgPuppy2;
-    private Icon imgPuppy3;
-    private Icon imgPuppy4;
-    private Icon imgCar1;
-    private Icon imgCar2;
-    private Icon imgCar3;
-    private Icon imgCar4;
-    private Icon imgBicycle1;
-    private Icon imgBicycle2;
-    private Icon imgBicycle3;
-    private Icon imgBicycle4;
-    private Icon img01bird1;
-    private Icon img01bird2;
-    private Icon img01bird3;
-    private Icon img01bird4;
+
     private Icon imgBackground;
     private int score;
     private int guess;
-    private String answer;
-    private Boolean isClicked;
-    
-    public App(){
+    private int life;
+    private int lifeSave;
+    // private Boolean isClicked;
+    private int isClicked;
+    private String mode;
+    private int tables;
+
+    public App() {
         f = new JFrame("Game Puzzle");
         f.setSize(500, 600);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         detailComponents();
-        
     }
 
     private void detailComponents() {
+        // import a image
         try {
-            img1 = new ImageIcon("Game_puzzle/cowboy.png");
-            imgBackground = new ImageIcon("Game_puzzle/picture/background/image_part_001.jpg");
-            imgCat1 = new ImageIcon("Game_puzzle/picture/cat/image_part_001.jpg");
-            imgCat2 = new ImageIcon("Game_puzzle/picture/cat/image_part_002.jpg");
-            imgCat3 = new ImageIcon("Game_puzzle/picture/cat/image_part_003.jpg");
-            imgCat4 = new ImageIcon("Game_puzzle/picture/cat/image_part_004.jpg");
-            imgPuppy1 = new ImageIcon("Game_puzzle/picture/puppy/image_part_001.jpg");
-            imgPuppy2 = new ImageIcon("Game_puzzle/picture/puppy/image_part_002.jpg");
-            imgPuppy3 = new ImageIcon("Game_puzzle/picture/puppy/image_part_003.jpg");
-            imgPuppy4 = new ImageIcon("Game_puzzle/picture/puppy/image_part_004.jpg");
-            imgBicycle1 = new ImageIcon("Game_puzzle/picture/bicycle/image_part_001.jpg");
-            imgBicycle2 = new ImageIcon("Game_puzzle/picture/bicycle/image_part_002.jpg");
-            imgBicycle3 = new ImageIcon("Game_puzzle/picture/bicycle/image_part_003.jpg");
-            imgBicycle4 = new ImageIcon("Game_puzzle/picture/bicycle/image_part_004.jpg");
-            imgCar1 = new ImageIcon("Game_puzzle/picture/car/image_part_001.jpg");
-            imgCar2 = new ImageIcon("Game_puzzle/picture/car/image_part_002.jpg");
-            imgCar3 = new ImageIcon("Game_puzzle/picture/car/image_part_003.jpg");
-            imgCar4 = new ImageIcon("Game_puzzle/picture/car/image_part_004.jpg");
-            img01bird1 = new ImageIcon("Game_puzzle/picture/bird01/image_part_001.jpg");
-            img01bird2 = new ImageIcon("Game_puzzle/picture/bird01/image_part_002.jpg");
-            img01bird3 = new ImageIcon("Game_puzzle/picture/bird01/image_part_003.jpg");
-            img01bird4 = new ImageIcon("Game_puzzle/picture/bird01/image_part_004.jpg");
-            
-        } catch(Exception e){
+            // Select game mode
+            String[] modes = { "Easy mode", "Normal mode", "Hard mode" };
+            int selectedMode = JOptionPane.showOptionDialog(null, "Easy = 4 tables\nNormal = 9 tables\nHard = 9 tables",
+                    "Mode Selector",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
+
+            if (selectedMode == 0) {
+                f.setVisible(true);
+                imageEasy();
+                mode = "Easy";
+                tables = 4;
+                life = 10;
+                System.out.println("Easy mode");
+            } else if (selectedMode == 1) {
+                // f.setVisible(true);
+                imageNormal();
+                mode = "Normal";
+                tables = 9;
+                life = 3;
+                System.out.println("Normal mode");
+            } else if (selectedMode == 2) {
+                // f.setVisible(true);
+                imageHard();
+                mode = "Hard";
+                tables = 9;
+                life = 3;
+                System.out.println("Hard mode");
+            }
+            // image Backgroud
+            imgBackground = new ImageIcon("C:/Users/Petch/OneDrive/Desktop/Java Y1T2/Gui/Project/ProjectOOP/Game_puzzle/picture/background/image_part_001.jpg");
+
+        } catch (Exception e) {
             System.out.println(e);
         }
-        // lbLogo = new JLabel(img1);
+
+        // declare 
         btnPlay = new JButton("Play");
         btnNewGame = new JButton("New Game");
-        btnpuzzle = new JButton[4];
-        for (int i = 0; i < 4; i++) {
-            btnpuzzle[i] = new JButton(imgBackground);
+        btnpuzzle = new JButton[tables];
+        for (int i = 0; i < tables; i++) {
+            btnpuzzle[i] = new JButton();
             btnpuzzle[i].setPreferredSize(new Dimension(200, 200));
             f.add(btnpuzzle[i]);
         }
         lbScore = new JLabel("");
-        btnSubmit = new JButton("submit");
+        btnSubmit = new JButton("Submit");
         tfAnswer = new JTextField("", 16);
-        
-        // lbLogo.setPreferredSize(new Dimension(200, 200));
+        lifeSave = life;
+
+        //Set size
         tfAnswer.setPreferredSize(new Dimension(150, 20));
         btnSubmit.setPreferredSize(new Dimension(150, 20));
         btnPlay.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
         lbScore.setPreferredSize(new Dimension(200, 50));
 
+        // add variable into frame
         f.setLayout(new FlowLayout());
-        // f.add(lbLogo);
         f.add(tfAnswer);
         f.add(btnSubmit);
         f.add(lbScore);
         f.add(btnPlay);
         f.add(btnNewGame);
 
+        // Class add function button
         AllButtonsListener bl = new AllButtonsListener();
         btnPlay.addActionListener(bl);
         btnNewGame.addActionListener(bl);
-        for (int i=0; i < btnpuzzle.length; i++)
-        {btnpuzzle[i].addActionListener(bl);}
+        for (int i = 0; i < btnpuzzle.length; i++) {
+            btnpuzzle[i].addActionListener(bl);
+        }
 
+        // Class add function check the answer 
         ChecktheAnswer b2 = new ChecktheAnswer();
         tfAnswer.addActionListener(b2);
         btnSubmit.addActionListener(b2);
 
-
-        String[] modes = { "Easy mode", "Hard mode" };
-        int selectedMode = JOptionPane.showOptionDialog(null, "Easy = 4 tables\nHard = 9 tables", "Mode Selector",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
-
-        if (selectedMode == 0) {
-            f.setVisible(true);
-            System.out.println("Easy mode");
-        } else {
-            System.out.println("Hard mode");
-        }
+        // Play game
         newGame();
 
     }
-    private void newGame(){
+    // function new game
+    private void newGame() {
+        life = lifeSave;
         score = 0;
         guess = 0;
         tfAnswer.setText("");
         createPuzzle();
         play();
     }
+    // function createPuzzle
     private void createPuzzle() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < tables; i++) {
             btnpuzzle[i].setIcon(imgBackground);
         }
         ans();
     }
-    private void play(){
-        isClicked = false;
-        lbScore.setText("Score: " + score +"\n Guess: " + guess);
-        tfAnswer.setText("");
+    // function play
+    private void play() {
+        // isClicked = false;
+        isClicked += 1;
+        lbScore.setText("Score: " + score + "\nGuess: " + guess + "\nLife: " + life); // show score, guess and life
+        tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
     }
-    private Icon ansImg(int idx) {
-        Icon ansImg = img1;
-        if(answer == "CAT" && idx==0) ansImg = imgCat1;
-        if(answer == "CAT" && idx==1) ansImg = imgCat2;
-        if(answer == "CAT" && idx==2) ansImg = imgCat3;
-        if(answer == "CAT" && idx==3) ansImg = imgCat4;
-        else if(answer == "PUPPY"&& idx==0) ansImg = imgPuppy1;
-        else if(answer == "PUPPY"&& idx==1) ansImg = imgPuppy2;
-        else if(answer == "PUPPY"&& idx==2) ansImg = imgPuppy3;
-        else if(answer == "PUPPY"&& idx==3) ansImg = imgPuppy4;
-        else if(answer == "BICYCLE" && idx==0) ansImg = imgBicycle1;
-        else if(answer == "BICYCLE" && idx==1) ansImg = imgBicycle2;
-        else if(answer == "BICYCLE" && idx==2) ansImg = imgBicycle3;
-        else if(answer == "BICYCLE" && idx==3) ansImg = imgBicycle4;
-        else if(answer == "CAR" && idx==0) ansImg = imgCar1;
-        else if(answer == "CAR" && idx==1) ansImg = imgCar2;
-        else if(answer == "CAR" && idx==2) ansImg = imgCar3;
-        else if(answer == "CAR" && idx==3) ansImg = imgCar4;
-        else if (answer == "BIRD" && idx == 0)
-            ansImg = img01bird1;
-        else if (answer == "BIRD" && idx == 1)
-            ansImg = img01bird2;
-        else if (answer == "BIRD" && idx == 2)
-            ansImg = img01bird3;
-        else if (answer == "BIRD" && idx == 3)
-            ansImg = img01bird4;
-        // if (ans == "cat") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgCat[i]);};}
-        // if (ans == "puppy") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgPuppy[i]);};}
-        // if (ans == "bicycle") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgBicycle[i]);};}
-        // if (ans == "car") {for(int i = 0; i < 4; i++){btnpuzzle[i].setIcon(imgCar[i]);};}
-        return ansImg;
+    // function image of puzzle
+    private Icon imgPuzzle(int idx) {
+        String a = answer;
+        String ansCapitalize = a.substring(0, 1) + a.substring(1).toLowerCase(); // Capitalize
+        String srcImg= "Game_puzzle/picture/Easy/"+ ansCapitalize +"/" + (Math.abs(idx-4)) + ".jpg"; // path of answer image
+        Icon img = new ImageIcon(srcImg);
+        return img;
     }
-       private void ans() {
-        String[] puzzle = { "CAT", "PUPPY", "BICYCLE", "CAR", "BIRD" };
-        int rd = (int) (Math.random() * 5);
-        if (puzzle[rd] == "CAT")
-            answer = "CAT";
-        else if (puzzle[rd] == "PUPPY")
-            answer = "PUPPY";
-        else if (puzzle[rd] == "BICYCLE")
-            answer = "BICYCLE";
-        else if (puzzle[rd] == "CAR")
-            answer = "CAR";
-        else if (puzzle[rd] == "BIRD")
-            answer = "BIRD";
-
+    // function random the answer
+    private void ans() {
+        if (mode == "Easy") answerOfEasy();
+        else if (mode == "Normal") answerOfNormal();
+        else answerOfHard();    
+    }
+    private void autoplay() {
+        isClicked = 99;
     }
     // class for check the answer
-    private class ChecktheAnswer implements ActionListener{
+    private class ChecktheAnswer implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String s = tfAnswer.getText();
-            // กำหนดให้สามารถทายได้แค่ 20 รอบ
-            if(guess == 20){
-                String gg = "Game Over!!!\n" + "YourScore: " + score +"\nGuess: " + guess;
-                JOptionPane.showMessageDialog(null,gg,"Thank for playing!", 2);
+            // สำหรับการ test
+            if (s.toUpperCase().equals("HACK")) {
+                JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
+                life=99;
+                play();
+                autoplay();
+            }
+            // ถ้าชีวิตหมดก็จบเกม
+            else if (life == 0) {
+                String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess;
+                JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
                 newGame();
             }
             // เช็คคำตอบว่าใช่ ถ้าใช่ก็ให้เพิ่ม scoreกับguess
-            else if(s.toUpperCase().equals(answer)) {
+            else if (s.toUpperCase().equals(answer)) {
                 score++;
                 guess++;
-                lbScore.setText("Score: " + score +"\n Guess: " + guess); // show score and guess
-                JOptionPane.showMessageDialog(null, "You're Correct!!!","The Answer", 1);  // popup 
-                isClicked = false;
-                tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
+                JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
+                play();
                 createPuzzle();
-            }
-            else {
+            } else {
                 guess++;
-                lbScore.setText("Score: " + score +"\n Guess: " + guess); 
-                JOptionPane.showMessageDialog(null, "You're Wrong!!!","The Answer", 1);
-                tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
+                life--;
+                JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
+                play();
             }
             
         }
     }
 
-    // class for each button  
-    private class AllButtonsListener implements ActionListener{
+    // class for each button
+    private class AllButtonsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
-            if ((source == btnpuzzle[0]) && (!isClicked)){
-                btnpuzzle[0].setIcon(ansImg(0));
-                isClicked = true;
-            }else if ((source == btnpuzzle[1]) && (!isClicked)){
-                btnpuzzle[1].setIcon(ansImg(1));                
-                isClicked = true;
-            }else if ((source == btnpuzzle[2]) && (!isClicked)){
-                btnpuzzle[2].setIcon(ansImg(2));
-                isClicked = true;
-            }else if ((source == btnpuzzle[3]) && (!isClicked)){
-                btnpuzzle[3].setIcon(ansImg(3));
-                isClicked = true;
-            }else if (source == btnPlay) {
+            // if ((source == btnpuzzle[0]) && (!isClicked)) {
+            //     btnpuzzle[0].setIcon(imgPuzzle(0));
+            //     isClicked = true;
+            // } else if ((source == btnpuzzle[1]) && (!isClicked)) {
+            //     btnpuzzle[1].setIcon(imgPuzzle(1));
+            //     isClicked = true;
+            // } else if ((source == btnpuzzle[2]) && (!isClicked)) {
+            //     btnpuzzle[2].setIcon(imgPuzzle(2));
+            //     isClicked = true;
+            // } else if ((source == btnpuzzle[3]) && (!isClicked)) {
+            //     btnpuzzle[3].setIcon(imgPuzzle(3));
+            //     isClicked = true;
+            // } else if (source == btnPlay) {
+            //     guess++;
+            //     play();
+            // } else if (source == btnNewGame) {
+            //     newGame();
+            // }
+            if ((source == btnpuzzle[0]) && (isClicked > 0)) {
+                btnpuzzle[0].setIcon(imgPuzzle(0));
+                isClicked--;
+            } else if ((source == btnpuzzle[1]) && (isClicked > 0)) {
+                btnpuzzle[1].setIcon(imgPuzzle(1));
+                isClicked--;
+            } else if ((source == btnpuzzle[2]) && (isClicked > 0)) {
+                btnpuzzle[2].setIcon(imgPuzzle(2));
+                isClicked--;
+            } else if ((source == btnpuzzle[3]) && (isClicked > 0)) {
+                btnpuzzle[3].setIcon(imgPuzzle(3));
+                isClicked--;
+            } else if (source == btnPlay) {
                 guess++;
-                play();                
-            }else if (source == btnNewGame) {
+                play();
+            } else if (source == btnNewGame) {
                 newGame();
-            }        
+            }
         }
     }
 }
