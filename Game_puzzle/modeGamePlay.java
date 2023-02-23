@@ -9,7 +9,7 @@ public class modeGamePlay {
     protected Icon[] imgBird = new Icon[4];
     protected Icon[] imgCat = new Icon[4];
     protected Icon[] imgChicken = new Icon[4];
-    protected Icon[] imgDino = new Icon[4];
+    protected Icon[] imgDinosaur = new Icon[4];
     protected Icon[] imgDog = new Icon[4];
     protected Icon[] imgDuck = new Icon[4];
     protected Icon[] imgFox = new Icon[4];
@@ -17,17 +17,17 @@ public class modeGamePlay {
     protected Icon[] imgSnake = new Icon[4];
     protected Icon[] imgWolf = new Icon[4];
     //Normal
-    protected Icon[] imgBear = new Icon[4];
-    protected Icon[] imgDuck2 = new Icon[4];
-    protected Icon[] imgElephant = new Icon[4];
-    protected Icon[] imgFish = new Icon[4];
-    protected Icon[] imgHorse = new Icon[4];
-    protected Icon[] imgJellyFish = new Icon[4];
-    protected Icon[] imgMonkey = new Icon[4];
-    protected Icon[] imgPig2 = new Icon[4];
-    protected Icon[] imgPandaPo = new Icon[4];
-    protected Icon[] imgPolar = new Icon[4];
-    protected Icon[] imgSheep = new Icon[4];
+    protected Icon[] imgBear = new Icon[9];
+    protected Icon[] imgDuck2 = new Icon[9];
+    protected Icon[] imgElephant = new Icon[9];
+    protected Icon[] imgFish = new Icon[9];
+    protected Icon[] imgHorse = new Icon[9];
+    protected Icon[] imgJellyFish = new Icon[9];
+    protected Icon[] imgMonkey = new Icon[9];
+    protected Icon[] imgPig2 = new Icon[9];
+    protected Icon[] imgPandaPo = new Icon[9];
+    protected Icon[] imgPolar = new Icon[9];
+    protected Icon[] imgSheep = new Icon[9];
     //Hard
     protected Icon[] imgCamel = new Icon[9];
     protected Icon[] imgCat2 = new Icon[9];
@@ -43,29 +43,32 @@ public class modeGamePlay {
 
     //Other
     protected String answer;
-    // image for easy mode
+    protected int tables;
+
     public void imageEasy(){
-        for (int i = 0; i < 4; i++) {
-            imgAligator[i] = new ImageIcon("Game_puzzle/picture/Easy/Aligator/" + (Math.abs(i-4)) + ".jpg");
-            imgBird[i] = new ImageIcon("Game_puzzle/picture/Easy/Bird/" + (Math.abs(i-4)) + ".jpg");
-            imgCat[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-4)) + ".jpg");
-            imgChicken[i] = new ImageIcon("Game_puzzle/picture/Easy/Chicken/" + (Math.abs(i-4)) + ".jpg");
-            imgDino[i] = new ImageIcon("Game_puzzle/picture/Easy/Dino/" + (Math.abs(i-4)) + ".jpg");
-            imgDog[i] = new ImageIcon("Game_puzzle/picture/Easy/Dog/" + (Math.abs(i-4)) + ".jpg");
-            imgDuck[i] = new ImageIcon("Game_puzzle/picture/Easy/Duck/" + (Math.abs(i-4)) + ".jpg");
-            imgFox[i] = new ImageIcon("Game_puzzle/picture/Easy/Fox/" + (Math.abs(i-4)) + ".jpg");
-            imgPig[i] = new ImageIcon("Game_puzzle/picture/Easy/Pig/" + (Math.abs(i-4)) + ".jpg");
-            imgSnake[i] = new ImageIcon("Game_puzzle/picture/Easy/Snake/" + (Math.abs(i-4)) + ".jpg");
-            imgWolf[i] = new ImageIcon("Game_puzzle/picture/Easy/Wolf/" + (Math.abs(i-4)) + ".jpg");
+        tables = 4;
+        for (int i = 0; i < tables; i++) {
+            imgAligator[i] = new ImageIcon("Game_puzzle/picture/Easy/Aligator/" + (Math.abs(i-tables)) + ".jpg");
+            imgBird[i] = new ImageIcon("Game_puzzle/picture/Easy/Bird/" + (Math.abs(i-tables)) + ".jpg");
+            imgCat[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
+            imgChicken[i] = new ImageIcon("Game_puzzle/picture/Easy/Chicken/" + (Math.abs(i-tables)) + ".jpg");
+            imgDinosaur[i] = new ImageIcon("Game_puzzle/picture/Easy/Dino/" + (Math.abs(i-tables)) + ".jpg");
+            imgDog[i] = new ImageIcon("Game_puzzle/picture/Easy/Dog/" + (Math.abs(i-tables)) + ".jpg");
+            imgDuck[i] = new ImageIcon("Game_puzzle/picture/Easy/Duck/" + (Math.abs(i-tables)) + ".jpg");
+            imgFox[i] = new ImageIcon("Game_puzzle/picture/Easy/Fox/" + (Math.abs(i-tables)) + ".jpg");
+            imgPig[i] = new ImageIcon("Game_puzzle/picture/Easy/Pig/" + (Math.abs(i-tables)) + ".jpg");
+            imgSnake[i] = new ImageIcon("Game_puzzle/picture/Easy/Snake/" + (Math.abs(i-tables)) + ".jpg");
+            imgWolf[i] = new ImageIcon("Game_puzzle/picture/Easy/Wolf/" + (Math.abs(i-tables)) + ".jpg");
         }
     }
-    // image for normal mode
+
     public void imageNormal(){
-        for (int i = 0; i < 4; i++) {
-            imgBear[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-4)) + ".jpg");
+        tables = 9;
+        for (int i = 0; i < tables; i++) {
+            imgBear[i] = new ImageIcon("Game_puzzle/picture/Normal/Bear/" + (Math.abs(i-tables)) + ".jpg");
             imgDuck2[i] = new ImageIcon();
             imgElephant[i] = new ImageIcon();
-            imgFish[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-4)) + ".jpg");
+            imgFish[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
             imgHorse[i] = new ImageIcon();
             imgJellyFish[i] = new ImageIcon();
             imgMonkey[i] = new ImageIcon();
@@ -75,13 +78,14 @@ public class modeGamePlay {
             imgSheep[i] = new ImageIcon();
         }
     }
-    // image for hard mode
+
     public void imageHard(){
-        for (int i = 0; i < 4; i++) {
-            imgCamel[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-4)) + ".jpg");
+        tables = 9;
+        for (int i = 0; i < tables; i++) {
+            imgCamel[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
             imgCat2[i] = new ImageIcon();
             imgClam[i] = new ImageIcon();
-            imgCow[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-4)) + ".jpg");
+            imgCow[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
             imgDoge[i] = new ImageIcon();
             imgDophin[i] = new ImageIcon();
             imgOrca[i] = new ImageIcon();
@@ -91,7 +95,7 @@ public class modeGamePlay {
             imgTiger[i] = new ImageIcon();
         }
     }
-    // the answer of easy mode
+    
     public String answerOfEasy() {
         String[] puzzle = { "ALIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
         int rd = (int) (Math.random() * 11);
@@ -120,10 +124,9 @@ public class modeGamePlay {
 
         return answer;
     }
-    // the answer of normal mode
     public String answerOfNormal() {
         String[] puzzle = { "ALIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
-        int rd = (int) (Math.random() * 5);
+        int rd = (int) (Math.random() * 11);
         if (puzzle[rd] == "ALIGATOR")
             answer = "ALIGATOR";
         else if (puzzle[rd] == "BIRD")
@@ -147,12 +150,12 @@ public class modeGamePlay {
         else if (puzzle[rd] == "WOLF")
             answer = "WOLF";
 
-        return answer;
+        return answer = "BEAR";
     }
-    // the answer of hard mode
+
     public String answerOfHard() {
         String[] puzzle = { "ALIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
-        int rd = (int) (Math.random() * 5);
+        int rd = (int) (Math.random() * 10);
         if (puzzle[rd] == "ALIGATOR")
             answer = "ALIGATOR";
         else if (puzzle[rd] == "BIRD")
