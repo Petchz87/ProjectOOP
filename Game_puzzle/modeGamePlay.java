@@ -62,40 +62,40 @@ public class modeGamePlay {
         }
     }
 
-    public void imageNormal(){
+     public void imageNormal(){
         tables = 9;
         for (int i = 0; i < tables; i++) {
             imgBear[i] = new ImageIcon("Game_puzzle/picture/Normal/Bear/" + (Math.abs(i-tables)) + ".jpg");
-            imgDuck2[i] = new ImageIcon();
-            imgElephant[i] = new ImageIcon();
-            imgFish[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
-            imgHorse[i] = new ImageIcon();
-            imgJellyFish[i] = new ImageIcon();
-            imgMonkey[i] = new ImageIcon();
-            imgPig2[i] = new ImageIcon();
-            imgPandaPo[i] = new ImageIcon();
-            imgPolar[i] = new ImageIcon();
-            imgSheep[i] = new ImageIcon();
+            imgDuck2[i] = new ImageIcon("Game_puzzle/picture/Normal/Duck2/" + (Math.abs(i-tables)) + ".jpg");
+            imgElephant[i] = new ImageIcon("Game_puzzle/picture/Normal/Elephant/" + (Math.abs(i-tables)) + ".jpg");
+            imgFish[i] = new ImageIcon("Game_puzzle/picture/Normal/Fish/" + (Math.abs(i-tables)) + ".jpg");
+            imgHorse[i] = new ImageIcon("Game_puzzle/picture/Normal/Horse/" + (Math.abs(i-tables)) + ".jpg");
+            imgJellyFish[i] = new ImageIcon("Game_puzzle/picture/Normal/Jellyfish/" + (Math.abs(i-tables)) + ".jpg");
+            imgMonkey[i] = new ImageIcon("Game_puzzle/picture/Normal/Monkey/" + (Math.abs(i-tables)) + ".jpg");
+            imgPig2[i] = new ImageIcon("Game_puzzle/picture/Normal/Pig2/" + (Math.abs(i-tables)) + ".jpg");
+            imgPandaPo[i] = new ImageIcon("Game_puzzle/picture/Normal/PandaPo/" + (Math.abs(i-tables)) + ".jpg");
+            imgPolar[i] = new ImageIcon("Game_puzzle/picture/Normal/Polar/" + (Math.abs(i-tables)) + ".jpg");
+            imgSheep[i] = new ImageIcon("Game_puzzle/picture/Normal/Sheep/" + (Math.abs(i-tables)) + ".jpg");
         }
     }
 
     public void imageHard(){
         tables = 9;
         for (int i = 0; i < tables; i++) {
-            imgCamel[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
-            imgCat2[i] = new ImageIcon();
-            imgClam[i] = new ImageIcon();
-            imgCow[i] = new ImageIcon("Game_puzzle/picture/Easy/Cat/" + (Math.abs(i-tables)) + ".jpg");
-            imgDoge[i] = new ImageIcon();
-            imgDophin[i] = new ImageIcon();
-            imgOrca[i] = new ImageIcon();
-            imgOurTeacher[i] = new ImageIcon();
-            imgPenguin1[i] = new ImageIcon();
-            imgPenguin2[i] = new ImageIcon();
-            imgTiger[i] = new ImageIcon();
+            imgCamel[i] = new ImageIcon("Game_puzzle/picture/Hard/Camel/" + (Math.abs(i-tables)) + ".jpg");
+            imgCat2[i] = new ImageIcon("Game_puzzle/picture/Hard/Cat2/" + (Math.abs(i-tables)) + ".jpg");
+            imgClam[i] = new ImageIcon("Game_puzzle/picture/Hard/Clam/" + (Math.abs(i-tables)) + ".jpg");
+            imgCow[i] = new ImageIcon("Game_puzzle/picture/Hard/Cow/" + (Math.abs(i-tables)) + ".jpg");
+            imgDoge[i] = new ImageIcon("Game_puzzle/picture/Hard/Doge/" + (Math.abs(i-tables)) + ".jpg");
+            imgDophin[i] = new ImageIcon("Game_puzzle/picture/Hard/Dophin/" + (Math.abs(i-tables)) + ".jpg");
+            imgOrca[i] = new ImageIcon("Game_puzzle/picture/Hard/Orca/" + (Math.abs(i-tables)) + ".jpg");
+            imgOurTeacher[i] = new ImageIcon("Game_puzzle/picture/Hard/Our Teacher/" + (Math.abs(i-tables)) + ".jpg");
+            imgPenguin1[i] = new ImageIcon("Game_puzzle/picture/Hard/Penguin1/" + (Math.abs(i-tables)) + ".jpg");
+            imgPenguin2[i] = new ImageIcon("Game_puzzle/picture/Hard/Penguin2/" + (Math.abs(i-tables)) + ".jpg");
+            imgTiger[i] = new ImageIcon("Game_puzzle/picture/Hard/Tiger/" + (Math.abs(i-tables)) + ".jpg");
         }
     }
-    
+   
     public String answerOfEasy() {
         String[] puzzle = { "ALIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
         int rd = (int) (Math.random() * 11);
