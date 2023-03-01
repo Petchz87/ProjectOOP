@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 
+import java.util.Random;
+
 public class App extends modeGamePlay {
     // interface
     private JFrame f;
@@ -35,9 +37,11 @@ public class App extends modeGamePlay {
     private int guess;
     private int life;
     private int lifeSave;
-    // private Boolean isClicked;
-    private int isClicked; // test
+    private Boolean isClicked;
     private String mode;
+    // question
+    private String question;
+    private int answerrr;
 
     public App() {
         f = new JFrame("Game Puzzle");
@@ -146,12 +150,13 @@ public class App extends modeGamePlay {
 
         // Play game
         newGame();
-
+        quiz();
     }
 
     // function new game
     private void newGame() {
         life = lifeSave;
+        isClicked = true;
         score = 0;
         guess = 0;
         tfAnswer.setText("");
@@ -169,8 +174,6 @@ public class App extends modeGamePlay {
 
     // function play
     private void play() {
-        // isClicked = false;
-        isClicked += 1;
         lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life); // show score, guess and life
         tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
     }
@@ -187,6 +190,13 @@ public class App extends modeGamePlay {
         return img;
     }
 
+    // function Game Over
+    private void gameOver() {
+        String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess;
+        JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
+        newGame();
+    }
+
     // function random the answer
     private void ans() {
         if (mode == "Easy")
@@ -197,9 +207,43 @@ public class App extends modeGamePlay {
             answerOfHard();
     }
 
-    // function for test
-    private void autoplay() {
-        isClicked = 99;
+    private void quiz() {
+        random();
+        // คำถาม
+        String ans = JOptionPane.showInputDialog(null, "" + question + "", "The Question", 1);
+        try {
+            if (answerrr == Integer.parseInt(ans)) {
+                // ตอบถูก
+                JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1);
+                // ทำอะไรต่อ เช่นเปิดแผ่านป่ายได้
+                isClicked = false;
+                play();
+            } else if (answerrr != Integer.parseInt(ans)) {
+                // ตอบผิด
+                guess++;
+                life--;
+                lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life); // show score, guess and
+                                                                                                // life
+                JOptionPane.showMessageDialog(null, "You're Wrong!!!\nPlease input the answer again.", "The Answer", 1);
+                tfAnswer.setText("");
+                if (life > 0)
+                    quiz(); // ตอบใหม่
+                else {
+                    gameOver();
+                }
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void random() {
+        Random random = new Random();
+        int a = random.nextInt(10);
+        int b = random.nextInt(10);
+        question = a + " + " + b + " = ?";
+        answerrr = a + b;
     }
 
     // class for check the answer
@@ -211,68 +255,44 @@ public class App extends modeGamePlay {
                 JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
                 life = 99;
                 play();
-                autoplay();
             }
             // ถ้าชีวิตหมดก็จบเกม
             else if (life == 0) {
-                String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess;
-                JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
-                newGame();
+                gameOver();
             }
             // เช็คคำตอบว่าใช่ ถ้าใช่ก็ให้เพิ่ม scoreกับguess
             else if (s.toUpperCase().equals(answer)) {
                 score++;
-                guess++;
                 JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
                 play();
                 createPuzzle();
             } else {
-                guess++;
                 life--;
                 JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
                 play();
             }
         }
     }
+
     // class for each button
     private class AllButtonsListener1 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
-            // if ((source == btnpuzzle[0]) && (!isClicked)) {
-            // btnpuzzle[0].setIcon(imgPuzzle(0));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[1]) && (!isClicked)) {
-            // btnpuzzle[1].setIcon(imgPuzzle(1));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[2]) && (!isClicked)) {
-            // btnpuzzle[2].setIcon(imgPuzzle(2));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[3]) && (!isClicked)) {
-            // btnpuzzle[3].setIcon(imgPuzzle(3));
-            // isClicked = true;
-            // } else if (source == btnPlay) {
-            // guess++;
-            // play();
-            // } else if (source == btnNewGame) {
-            // newGame();
-            // }
-            // TEST
-            if ((source == btnpuzzle[0]) && (isClicked > 0)) {
+            if ((source == btnpuzzle[0]) && (!isClicked)) {
                 btnpuzzle[0].setIcon(imgPuzzle(0));
-                isClicked--;
-            } else if ((source == btnpuzzle[1]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[1]) && (!isClicked)) {
                 btnpuzzle[1].setIcon(imgPuzzle(1));
-                isClicked--;
-            } else if ((source == btnpuzzle[2]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[2]) && (!isClicked)) {
                 btnpuzzle[2].setIcon(imgPuzzle(2));
-                isClicked--;
-            } else if ((source == btnpuzzle[3]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[3]) && (!isClicked)) {
                 btnpuzzle[3].setIcon(imgPuzzle(3));
-                isClicked--;
+                isClicked = true;
             } else if (source == btnPlay) {
-                guess++;
-                play();
+                quiz();
             } else if (source == btnNewGame) {
                 newGame();
             }
@@ -283,70 +303,35 @@ public class App extends modeGamePlay {
         @Override
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
-            // if ((source == btnpuzzle[0]) && (!isClicked)) {
-            // btnpuzzle[0].setIcon(imgPuzzle(0));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[1]) && (!isClicked)) {
-            // btnpuzzle[1].setIcon(imgPuzzle(1));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[2]) && (!isClicked)) {
-            // btnpuzzle[2].setIcon(imgPuzzle(2));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[3]) && (!isClicked)) {
-            // btnpuzzle[3].setIcon(imgPuzzle(3));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[4]) && (isClicked > 0)) {
-            // btnpuzzle[4].setIcon(imgPuzzle(4));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[5]) && (isClicked > 0)) {
-            // btnpuzzle[5].setIcon(imgPuzzle(5));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[6]) && (isClicked > 0)) {
-            // btnpuzzle[6].setIcon(imgPuzzle(6));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[7]) && (isClicked > 0)) {
-            // btnpuzzle[7].setIcon(imgPuzzle(7));
-            // isClicked = true;
-            // } else if ((source == btnpuzzle[8]) && (isClicked > 0)) {
-            // btnpuzzle[8].setIcon(imgPuzzle(8));
-            // isClicked = true;
-            // } else if (source == btnPlay) {
-            // guess++;
-            // play();
-            // } else if (source == btnNewGame) {
-            // newGame();
-            // }
-            // TEST
-            if ((source == btnpuzzle[0]) && (isClicked > 0)) {
+            if ((source == btnpuzzle[0]) && (!isClicked)) {
                 btnpuzzle[0].setIcon(imgPuzzle(0));
-                isClicked--;
-            } else if ((source == btnpuzzle[1]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[1]) && (!isClicked)) {
                 btnpuzzle[1].setIcon(imgPuzzle(1));
-                isClicked--;
-            } else if ((source == btnpuzzle[2]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[2]) && (!isClicked)) {
                 btnpuzzle[2].setIcon(imgPuzzle(2));
-                isClicked--;
-            } else if ((source == btnpuzzle[3]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[3]) && (!isClicked)) {
                 btnpuzzle[3].setIcon(imgPuzzle(3));
-                isClicked--;
-            } else if ((source == btnpuzzle[4]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[4])) {
                 btnpuzzle[4].setIcon(imgPuzzle(4));
-                isClicked--;
-            } else if ((source == btnpuzzle[5]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[5])) {
                 btnpuzzle[5].setIcon(imgPuzzle(5));
-                isClicked--;
-            } else if ((source == btnpuzzle[6]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[6])) {
                 btnpuzzle[6].setIcon(imgPuzzle(6));
-                isClicked--;
-            } else if ((source == btnpuzzle[7]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[7])) {
                 btnpuzzle[7].setIcon(imgPuzzle(7));
-                isClicked--;
-            } else if ((source == btnpuzzle[8]) && (isClicked > 0)) {
+                isClicked = true;
+            } else if ((source == btnpuzzle[8])) {
                 btnpuzzle[8].setIcon(imgPuzzle(8));
-                isClicked--;
+                isClicked = true;
             } else if (source == btnPlay) {
-                guess++;
-                play();
+                quiz();
             } else if (source == btnNewGame) {
                 newGame();
             }
