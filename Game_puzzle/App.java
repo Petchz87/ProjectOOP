@@ -315,19 +315,19 @@ public class App extends modeGamePlay {
             } else if ((source == btnpuzzle[3]) && (!isClicked)) {
                 btnpuzzle[3].setIcon(imgPuzzle(3));
                 isClicked = true;
-            } else if ((source == btnpuzzle[4])) {
+            } else if ((source == btnpuzzle[4]) && (!isClicked)) {
                 btnpuzzle[4].setIcon(imgPuzzle(4));
                 isClicked = true;
-            } else if ((source == btnpuzzle[5])) {
+            } else if ((source == btnpuzzle[5]) && (!isClicked)) {
                 btnpuzzle[5].setIcon(imgPuzzle(5));
                 isClicked = true;
-            } else if ((source == btnpuzzle[6])) {
+            } else if ((source == btnpuzzle[6]) && (!isClicked)) {
                 btnpuzzle[6].setIcon(imgPuzzle(6));
                 isClicked = true;
-            } else if ((source == btnpuzzle[7])) {
+            } else if ((source == btnpuzzle[7]) && (!isClicked)) {
                 btnpuzzle[7].setIcon(imgPuzzle(7));
                 isClicked = true;
-            } else if ((source == btnpuzzle[8])) {
+            } else if ((source == btnpuzzle[8]) && (!isClicked)) {
                 btnpuzzle[8].setIcon(imgPuzzle(8));
                 isClicked = true;
             } else if (source == btnPlay) {
