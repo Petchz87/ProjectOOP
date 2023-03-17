@@ -53,6 +53,7 @@ public class App extends modeGamePlay {
         f.setResizable(false);
         selectedMode();
     }
+
     private void selectedMode() {
         f.setVisible(false);
         try {
@@ -66,7 +67,7 @@ public class App extends modeGamePlay {
                 modeEasy();
                 mode = "Easy";
                 tables = 4;
-                life = 7;
+                life = 5;
                 width = 200;
                 height = 200;
                 System.out.println("Easy mode");
@@ -74,7 +75,7 @@ public class App extends modeGamePlay {
                 modeNormal();
                 mode = "Normal";
                 tables = 9;
-                life = 5;
+                life = 4;
                 width = 134;
                 height = 134;
                 System.out.println("Normal mode");
@@ -97,8 +98,9 @@ public class App extends modeGamePlay {
         sound("Game_puzzle/Music/red.wav");
         f.setVisible(true);
     }
+
     private void detailComponents() {
-        
+
         // declare
         lbNameGame = new JLabel("Puzzle of Happiness", SwingConstants.CENTER);
         btnMenu = new JButton("Main Menu");
@@ -154,6 +156,8 @@ public class App extends modeGamePlay {
     public void newGame() {
         life = lifeSave;
         cnt = 0;
+        score = 0;
+        guess = 0;
         createPuzzle();
         play();
         if (mode == "Easy")
@@ -169,6 +173,12 @@ public class App extends modeGamePlay {
         for (int i = 0; i < tables; i++) {
             btnpuzzle[i].setIcon(imgBackground);
         }
+        if (mode == "Easy")
+            modeEasy();
+        else if (mode == "Normal")
+            modeNormal();
+        else if (mode == "Hard")
+            modeHard();
     }
 
     // function play
@@ -234,8 +244,8 @@ public class App extends modeGamePlay {
         return img;
     }
 
-    public void sound(String srcSound){
-       try{
+    public void sound(String srcSound) {
+        try {
             File file = new File(srcSound);
             AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
@@ -243,22 +253,21 @@ public class App extends modeGamePlay {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
             clip.start();
-       } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1){
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 
-       }
+        }
     }
 
     // class for check the answer
     private class ChecktheAnswer implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String s = tfAnswer.getText();
-            // for test 
-            if (score == 4){JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
+            // for test
+            if (score > 4) {
+                JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
                 sound("Game_puzzle/Music/Win.wav");
                 newGame();
-                score = 0;
-                }
-            if (s.toUpperCase().equals("HACK")) {
+            } else if (s.toUpperCase().equals("HACK")) {
                 JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
                 life = 99;
                 play();
@@ -268,15 +277,18 @@ public class App extends modeGamePlay {
                 }
             }
             // Live end
-            else if (life < 1) {JOptionPane.showMessageDialog(null, "Nice Try", "New Game please!!", 1); // popup
-            sound("Game_puzzle/Music/lose.wav");
+            else if (life < 1) {
+                JOptionPane.showMessageDialog(null, "Nice Try", "New Game please!!", 1); // popup
+                sound("Game_puzzle/Music/lose.wav");
                 gameOver();
             } else {
                 if (s.toUpperCase().equals(showAnswer())) {
+                    cnt = 0;
                     score++;
                     JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
                     sound("Game_puzzle/Music/correct.wav");
-                    newGame();
+                    createPuzzle();
+                    play();
                 } else if (!s.toUpperCase().equals(showAnswer()) && !s.equals("")) {
                     life--;
                     JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
@@ -295,7 +307,7 @@ public class App extends modeGamePlay {
             JButton source = (JButton) ev.getSource();
             try {
                 if (source == btnMenu) {
-                    
+
                     f.remove(lbNameGame);
                     for (int i = 0; i < tables; i++) {
                         f.remove(btnpuzzle[i]);
@@ -343,5 +355,5 @@ public class App extends modeGamePlay {
 
         }
     }
-    
+
 }
