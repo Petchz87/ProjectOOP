@@ -34,7 +34,6 @@ public class App extends modeGamePlay {
     private Icon imgBackground;
 
     private int width, height;
-    // private Boolean isClicked = false;
     // gameplay
     private int score;
     private int guess;
@@ -183,14 +182,15 @@ public class App extends modeGamePlay {
 
     // function play
     protected void play() {
-        lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life); // show score, guess and life
-        tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
+        // show score, guess and life
+        lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life + "\n Mode: " + mode); //
+        tfAnswer.setText(""); // clear the answer
 
     }
 
     // function Game Over
     protected void gameOver() {
-        String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess;
+        String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\n Mode: " + mode;
         JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
         newGame();
     }
@@ -209,14 +209,14 @@ public class App extends modeGamePlay {
         String ans = JOptionPane.showInputDialog(null, "" + question + "", "The Question", 1);
         try {
             if (answerrr == Integer.parseInt(ans)) {
-                // Answer
+                // Answer is correct
                 JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1);
                 btnpuzzle[idx].setIcon(imgPuzzle(idx));
                 guess++;
                 cnt++;
                 play();
             } else if (answerrr != Integer.parseInt(ans)) {
-                // wrong
+                // Answer is wrong
                 guess++;
                 life--;
                 JOptionPane.showMessageDialog(null, "You're Wrong!!!\nPlease input the answer again.", "The Answer", 1);
@@ -251,7 +251,7 @@ public class App extends modeGamePlay {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInput);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
+            gainControl.setValue(-25.0f); // Reduce volume by 25 decibels. (-80 - 6)
             clip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 
@@ -307,7 +307,6 @@ public class App extends modeGamePlay {
             JButton source = (JButton) ev.getSource();
             try {
                 if (source == btnMenu) {
-
                     f.remove(lbNameGame);
                     for (int i = 0; i < tables; i++) {
                         f.remove(btnpuzzle[i]);
@@ -352,8 +351,6 @@ public class App extends modeGamePlay {
             } catch (Exception e) {
                 // System.out.println(e);
             }
-
         }
     }
-
 }
