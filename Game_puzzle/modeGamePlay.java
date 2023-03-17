@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 public class modeGamePlay {
     protected Icon[] imgEasy = new Icon[4];
     protected Icon[] imgNormalHard = new Icon[9];
-    String[] puzzle = { "ALIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
+    String[] puzzle = { "ALLIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
     String[] puzzle2 = { "BEAR", "DUCK", "ELEPHANT", "FISH", "HORSE", "JELLYFISH", "MONKEY", "PANDA", "PIG", "POLAR", "SHEEP"}; 
     String[] puzzle3 = {"CAMEL", "CAT", "CLAM", "COW", "DOG", "DOPHIN", "ORCA", "HUMAN", "PENGUIN", "PENGUIN2", "TIGER"};
     //Other

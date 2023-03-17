@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.sound.sampled.*;
 import javax.swing.Icon;
@@ -234,28 +235,18 @@ public class App extends modeGamePlay {
         return img;
     }
 
-    public void sound(String c) {
-        String srcSound = "";
-        if(c == "Correct"){
-            srcSound = "Game_puzzle/Music/Panya.wav";
-        }
-        else if(c == "Wrong"){
-            srcSound = "Game_puzzle/Music/wrong.wav";
-        }
-        else{
-            
-        }
-        try {
+    public void sound(String srcSound){
+       try{
             File file = new File(srcSound);
-            AudioInputStream audio;
-            audio = AudioSystem.getAudioInputStream(file);
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
-            clip.open(audio);
+            clip.open(audioInput);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
-        } catch (Exception e) {
-            
-        }
+            clip.start();
+       } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1){
+
+       }
     }
 
     // class for check the answer
@@ -279,12 +270,12 @@ public class App extends modeGamePlay {
                 if (s.toUpperCase().equals(showAnswer())) {
                     score++;
                     JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
-                    sound("Correct");
+                    sound("Game_puzzle/Music/Panya.wav");
                     newGame();
                 } else if (!s.toUpperCase().equals(showAnswer()) && !s.equals("")) {
                     life--;
                     JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
-                    sound("Wrong");
+                    sound("Game_puzzle/Music/wrong.wav");
                     play();
                 }
             }
@@ -298,7 +289,7 @@ public class App extends modeGamePlay {
             JButton source = (JButton) ev.getSource();
             try {
                 if (source == btnPlay) {
-                    sound("");
+                    sound("Game_puzzle/Music/red.wav");
                 }
                 if (source == btnNewGame) {
                     newGame();
