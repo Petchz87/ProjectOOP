@@ -32,6 +32,7 @@ public class App extends modeGamePlay {
     private JLabel lbScore;
     private JButton btnNewGame;
     private Icon imgBackground;
+    private JButton btnSound;
 
     private int width, height;
     // gameplay
@@ -44,6 +45,11 @@ public class App extends modeGamePlay {
     // question
     private String question;
     private int answerrr;
+    private Boolean BGM_ON=false;
+
+    private File file;
+    private AudioInputStream audioInput;
+    private Clip clip;
 
     public App() {
         f = new JFrame("Game Puzzle");
@@ -108,10 +114,11 @@ public class App extends modeGamePlay {
         btnpuzzle = new JButton[tables];
         btnSubmit = new JButton("Submit");
         tfAnswer = new JTextField("", 20);
+        btnSound  = new JButton("Mute BGM");
         lifeSave = life;
 
         // Set size
-        lbNameGame.setPreferredSize(new Dimension(400, 50));
+        lbNameGame.setPreferredSize(new Dimension(375, 50));
         lbNameGame.setFont(new Font("Serif", Font.PLAIN, 35));
         lbNameGame.setForeground(Color.PINK);
         tfAnswer.setPreferredSize(new Dimension(150, 20));
@@ -119,10 +126,12 @@ public class App extends modeGamePlay {
         btnMenu.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
         lbScore.setPreferredSize(new Dimension(200, 50));
+        btnSound.setPreferredSize(new Dimension(25, 25));
 
         // add variable into frame
         f.setLayout(new FlowLayout());
         f.add(lbNameGame);
+        f.add(btnSound);
         for (int i = 0; i < tables; i++) {
             btnpuzzle[i] = new JButton();
             btnpuzzle[i].setPreferredSize(new Dimension(width, height));
@@ -138,6 +147,7 @@ public class App extends modeGamePlay {
         AllButtonsListener1 b1 = new AllButtonsListener1();
         btnMenu.addActionListener(b1);
         btnNewGame.addActionListener(b1);
+        btnSound.addActionListener(b1);
         for (int i = 0; i < tables; i++) {
             btnpuzzle[i].addActionListener(b1);
         }
@@ -151,6 +161,38 @@ public class App extends modeGamePlay {
         newGame();
     }
 
+    public void playBGM(String bgm){
+
+
+        try{
+            file = new File(bgm);
+            audioInput = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
+            if(BGM_ON==true){
+               audioInput.close();
+               clip.close();
+               clip.stop();
+            }
+            else{
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                BGM_ON=true;
+
+            }
+
+
+
+       } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1){
+
+       }
+        BGM_ON=true;
+
+
+ }
+
     // function new game
     public void newGame() {
         life = lifeSave;
@@ -159,12 +201,21 @@ public class App extends modeGamePlay {
         guess = 0;
         createPuzzle();
         play();
-        if (mode == "Easy")
+        if (mode == "Easy"){
             modeEasy();
-        else if (mode == "Normal")
+            playBGM("Game_puzzle/Music/Cute.wav");
+        }
+            
+        else if (mode == "Normal"){
             modeNormal();
-        else if (mode == "Hard")
+            playBGM("Game_puzzle/Music/Cute.wav");
+        }
+            
+        else if (mode == "Hard"){
             modeHard();
+            playBGM("Game_puzzle/Music/Cute.wav");
+        }
+            
     }
 
     // function createPuzzle
@@ -190,6 +241,9 @@ public class App extends modeGamePlay {
 
     // function Game Over
     protected void gameOver() {
+        clip.stop();
+        BGM_ON=false;
+        sound("Game_puzzle/Music/GOV.wav");
         String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\n Mode: " + mode;
         JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
         newGame();
@@ -307,6 +361,8 @@ public class App extends modeGamePlay {
             JButton source = (JButton) ev.getSource();
             try {
                 if (source == btnMenu) {
+                    clip.stop();
+                    BGM_ON=false;
                     f.remove(lbNameGame);
                     for (int i = 0; i < tables; i++) {
                         f.remove(btnpuzzle[i]);
@@ -316,10 +372,29 @@ public class App extends modeGamePlay {
                     f.remove(lbScore);
                     f.remove(btnMenu);
                     f.remove(btnNewGame);
+                    f.remove(btnSound);
                     selectedMode();
                 }
                 if (source == btnNewGame) {
-                    newGame();
+                    
+                        clip.stop();
+                        BGM_ON=false;
+                        newGame();
+                    
+                    
+
+                }
+                if (source == btnSound) {
+                    if(BGM_ON==true){
+                        clip.stop();
+                        BGM_ON=false;
+                    }
+                    else{
+                        clip.start();
+                        BGM_ON=true;
+                    }
+
+                    
                 }
                 if ((source == btnpuzzle[0]) && (cnt != tables)) {
                     quiz(0);
