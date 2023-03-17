@@ -25,7 +25,7 @@ public class App extends modeGamePlay {
     // interface
     private JFrame f;
     private JLabel lbNameGame;
-    private JButton btnPlay;
+    private JButton btnSound;
     private JButton[] btnpuzzle;
     private JTextField tfAnswer;
     private JButton btnSubmit;
@@ -68,7 +68,7 @@ public class App extends modeGamePlay {
                 modeEasy();
                 mode = "Easy";
                 tables = 4;
-                life = 7;
+                life = 3;
                 width = 200;
                 height = 200;
                 System.out.println("Easy mode");
@@ -77,7 +77,7 @@ public class App extends modeGamePlay {
                 modeNormal();
                 mode = "Normal";
                 tables = 9;
-                life = 5;
+                life = 2;
                 width = 134;
                 height = 134;
                 System.out.println("Normal mode");
@@ -86,7 +86,7 @@ public class App extends modeGamePlay {
                 modeHard();
                 mode = "Hard";
                 tables = 9;
-                life = 3;
+                life = 1;
                 width = 134;
                 height = 134;
                 System.out.println("Hard mode");
@@ -99,8 +99,8 @@ public class App extends modeGamePlay {
         }
 
         // declare
-        lbNameGame = new JLabel("MODE: " + mode, SwingConstants.CENTER);
-        btnPlay = new JButton("Play");
+        lbNameGame = new JLabel("Puzzle of Happiness", SwingConstants.CENTER);
+        btnSound = new JButton("Sound");
         btnNewGame = new JButton("New Game");
         lbScore = new JLabel("");
         btnpuzzle = new JButton[tables];
@@ -111,10 +111,10 @@ public class App extends modeGamePlay {
         // Set size
         lbNameGame.setPreferredSize(new Dimension(400, 50));
         lbNameGame.setFont(new Font("Serif", Font.PLAIN, 35));
-        lbNameGame.setForeground(Color.GREEN);
+        lbNameGame.setForeground(Color.PINK);
         tfAnswer.setPreferredSize(new Dimension(150, 20));
         btnSubmit.setPreferredSize(new Dimension(150, 20));
-        btnPlay.setPreferredSize(new Dimension(100, 50));
+        btnSound.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
         lbScore.setPreferredSize(new Dimension(200, 50));
 
@@ -129,12 +129,12 @@ public class App extends modeGamePlay {
         f.add(tfAnswer);
         f.add(btnSubmit);
         f.add(lbScore);
-        f.add(btnPlay);
+        f.add(btnSound);
         f.add(btnNewGame);
 
         // Class add function button
         AllButtonsListener1 b1 = new AllButtonsListener1();
-        btnPlay.addActionListener(b1);
+        btnSound.addActionListener(b1);
         btnNewGame.addActionListener(b1);
         for (int i = 0; i < tables; i++) {
             btnpuzzle[i].addActionListener(b1);
@@ -153,6 +153,8 @@ public class App extends modeGamePlay {
     public void newGame() {
         life = lifeSave;
         cnt = 0;
+        score = 0;
+        guess = 0;
         createPuzzle();
         play();
         if (mode == "Easy")
@@ -174,8 +176,7 @@ public class App extends modeGamePlay {
     protected void play() {
         lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life); // show score, guess and life
         tfAnswer.setText(""); // เคลียร์ช่องคำตอบ
-        score = 0;
-        guess = 0;
+
     }
 
     // function Game Over
@@ -195,19 +196,18 @@ public class App extends modeGamePlay {
 
     private void quiz(int idx) {
         random();
-        // คำถาม
+        // Question
         String ans = JOptionPane.showInputDialog(null, "" + question + "", "The Question", 1);
         try {
             if (answerrr == Integer.parseInt(ans)) {
-                // ตอบถูก
+                // Answer
                 JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1);
-                // ทำอะไรต่อ เช่นเปิดแผ่านป่ายได้
                 btnpuzzle[idx].setIcon(imgPuzzle(idx));
                 guess++;
                 cnt++;
                 play();
             } else if (answerrr != Integer.parseInt(ans)) {
-                // ตอบผิด
+                // wrong
                 guess++;
                 life--;
                 JOptionPane.showMessageDialog(null, "You're Wrong!!!\nPlease input the answer again.", "The Answer", 1);
@@ -253,7 +253,7 @@ public class App extends modeGamePlay {
     private class ChecktheAnswer implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String s = tfAnswer.getText();
-            // สำหรับการ test
+            // for test
             if (s.toUpperCase().equals("HACK")) {
                 JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
                 life = 99;
@@ -263,8 +263,9 @@ public class App extends modeGamePlay {
                     btnpuzzle[idx].setIcon(imgPuzzle(idx));
                 }
             }
-            // ถ้าชีวิตหมดก็จบเกม
-            else if (life < 2) {
+            // Live end
+            else if (life < 1) {JOptionPane.showMessageDialog(null, "Nice Try", "New Game please!!", 1); // popup
+            sound("Game_puzzle/Music/lose.wav");
                 gameOver();
             } else {
                 if (s.toUpperCase().equals(showAnswer())) {
@@ -277,7 +278,11 @@ public class App extends modeGamePlay {
                     JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
                     sound("Game_puzzle/Music/wrong.wav");
                     play();
+                } else if (score == 5){JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
+                sound("Game_puzzle/Music/Win.wav");
+                newGame();
                 }
+
             }
         }
     }
@@ -288,7 +293,7 @@ public class App extends modeGamePlay {
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
             try {
-                if (source == btnPlay) {
+                if (source == btnSound) {
                     sound("Game_puzzle/Music/red.wav");
                 }
                 if (source == btnNewGame) {
