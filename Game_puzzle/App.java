@@ -25,7 +25,7 @@ public class App extends modeGamePlay {
     // interface
     private JFrame f;
     private JLabel lbNameGame;
-    private JButton btnSound;
+    private JButton btnMenu;
     private JButton[] btnpuzzle;
     private JTextField tfAnswer;
     private JButton btnSubmit;
@@ -51,11 +51,10 @@ public class App extends modeGamePlay {
         f.setSize(500, 600);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);
-        detailComponents();
+        selectedMode();
     }
-
-    private void detailComponents() {
-        // import a image
+    private void selectedMode() {
+        f.setVisible(false);
         try {
             // Select game mode
             String[] modes = { "Easy mode", "Normal mode", "Hard mode" };
@@ -64,29 +63,26 @@ public class App extends modeGamePlay {
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
 
             if (selectedMode == 0) {
-                f.setVisible(true);
                 modeEasy();
                 mode = "Easy";
                 tables = 4;
-                life = 3;
+                life = 7;
                 width = 200;
                 height = 200;
                 System.out.println("Easy mode");
             } else if (selectedMode == 1) {
-                f.setVisible(true);
                 modeNormal();
                 mode = "Normal";
                 tables = 9;
-                life = 2;
+                life = 5;
                 width = 134;
                 height = 134;
                 System.out.println("Normal mode");
             } else if (selectedMode == 2) {
-                f.setVisible(true);
                 modeHard();
                 mode = "Hard";
                 tables = 9;
-                life = 1;
+                life = 3;
                 width = 134;
                 height = 134;
                 System.out.println("Hard mode");
@@ -97,10 +93,15 @@ public class App extends modeGamePlay {
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        detailComponents();
+        sound("Game_puzzle/Music/red.wav");
+        f.setVisible(true);
+    }
+    private void detailComponents() {
+        
         // declare
         lbNameGame = new JLabel("Puzzle of Happiness", SwingConstants.CENTER);
-        btnSound = new JButton("Sound");
+        btnMenu = new JButton("Main Menu");
         btnNewGame = new JButton("New Game");
         lbScore = new JLabel("");
         btnpuzzle = new JButton[tables];
@@ -114,7 +115,7 @@ public class App extends modeGamePlay {
         lbNameGame.setForeground(Color.PINK);
         tfAnswer.setPreferredSize(new Dimension(150, 20));
         btnSubmit.setPreferredSize(new Dimension(150, 20));
-        btnSound.setPreferredSize(new Dimension(100, 50));
+        btnMenu.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
         lbScore.setPreferredSize(new Dimension(200, 50));
 
@@ -129,12 +130,12 @@ public class App extends modeGamePlay {
         f.add(tfAnswer);
         f.add(btnSubmit);
         f.add(lbScore);
-        f.add(btnSound);
+        f.add(btnMenu);
         f.add(btnNewGame);
 
         // Class add function button
         AllButtonsListener1 b1 = new AllButtonsListener1();
-        btnSound.addActionListener(b1);
+        btnMenu.addActionListener(b1);
         btnNewGame.addActionListener(b1);
         for (int i = 0; i < tables; i++) {
             btnpuzzle[i].addActionListener(b1);
@@ -153,8 +154,6 @@ public class App extends modeGamePlay {
     public void newGame() {
         life = lifeSave;
         cnt = 0;
-        score = 0;
-        guess = 0;
         createPuzzle();
         play();
         if (mode == "Easy")
@@ -253,7 +252,12 @@ public class App extends modeGamePlay {
     private class ChecktheAnswer implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String s = tfAnswer.getText();
-            // for test
+            // for test 
+            if (score == 4){JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
+                sound("Game_puzzle/Music/Win.wav");
+                newGame();
+                score = 0;
+                }
             if (s.toUpperCase().equals("HACK")) {
                 JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
                 life = 99;
@@ -278,9 +282,6 @@ public class App extends modeGamePlay {
                     JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
                     sound("Game_puzzle/Music/wrong.wav");
                     play();
-                } else if (score == 5){JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
-                sound("Game_puzzle/Music/Win.wav");
-                newGame();
                 }
 
             }
@@ -293,8 +294,18 @@ public class App extends modeGamePlay {
         public void actionPerformed(ActionEvent ev) {
             JButton source = (JButton) ev.getSource();
             try {
-                if (source == btnSound) {
-                    sound("Game_puzzle/Music/red.wav");
+                if (source == btnMenu) {
+                    
+                    f.remove(lbNameGame);
+                    for (int i = 0; i < tables; i++) {
+                        f.remove(btnpuzzle[i]);
+                    }
+                    f.remove(tfAnswer);
+                    f.remove(btnSubmit);
+                    f.remove(lbScore);
+                    f.remove(btnMenu);
+                    f.remove(btnNewGame);
+                    selectedMode();
                 }
                 if (source == btnNewGame) {
                     newGame();
@@ -332,4 +343,5 @@ public class App extends modeGamePlay {
 
         }
     }
+    
 }
