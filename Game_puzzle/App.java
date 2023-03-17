@@ -270,7 +270,7 @@ public class App extends modeGamePlay {
                 if (s.toUpperCase().equals(showAnswer())) {
                     score++;
                     JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
-                    sound("Game_puzzle/Music/Panya.wav");
+                    sound("Game_puzzle/Music/correct.wav");
                     newGame();
                 } else if (!s.toUpperCase().equals(showAnswer()) && !s.equals("")) {
                     life--;
