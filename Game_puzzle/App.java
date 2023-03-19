@@ -33,7 +33,6 @@ public class App extends modeGamePlay {
     private JButton btnNewGame;
     private Icon imgBackground;
     private JButton btnSound;
-
     private int width, height;
     // gameplay
     private int score;
@@ -45,14 +44,16 @@ public class App extends modeGamePlay {
     // question
     private String question;
     private int answerrr;
-    private Boolean BGM_ON=false;
-
+    // sound
     private File file;
     private AudioInputStream audioInput;
     private Clip clip;
-    private ImageIcon unmute = new ImageIcon("Game_puzzle/picture/background/unmute.png");
-    private ImageIcon mute = new ImageIcon("Game_puzzle/picture/background/mute.png");
+    private ImageIcon imgUnmute;
+    private ImageIcon imgMute;
+    private Boolean BGM_ON = false;
     private Boolean Ismute = false;
+    // other
+    private Boolean isSelectMode = false;
 
     public App() {
         f = new JFrame("Game Puzzle");
@@ -70,45 +71,49 @@ public class App extends modeGamePlay {
             int selectedMode = JOptionPane.showOptionDialog(null, "Easy = 4 tables\nNormal = 9 tables\nHard = 9 tables",
                     "Mode Selector",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
-
             if (selectedMode == 0) {
                 mode = "Easy";
                 tables = 4;
                 life = 5;
                 width = 200;
                 height = 200;
-                System.out.println("Easy mode");
+                isSelectMode = true;
+                // System.out.println("Easy mode");
             } else if (selectedMode == 1) {
                 mode = "Normal";
                 tables = 9;
                 life = 4;
                 width = 134;
                 height = 134;
-                System.out.println("Normal mode");
+                isSelectMode = true;
+                // System.out.println("Normal mode");
             } else if (selectedMode == 2) {
                 mode = "Hard";
                 tables = 9;
                 life = 3;
                 width = 134;
                 height = 134;
-                System.out.println("Hard mode");
+                isSelectMode = true;
+                // System.out.println("Hard mode");
             }
-            // image Backgroud
-            imgBackground = new ImageIcon("Game_puzzle/picture/background/image_part_001.jpg");
-
+            if (isSelectMode) {
+                // image Backgroud
+                imgBackground = new ImageIcon("Game_puzzle/picture/background/image_part_001.jpg");
+                imgUnmute = new ImageIcon("Game_puzzle/picture/background/unmute.png");
+                imgMute = new ImageIcon("Game_puzzle/picture/background/mute.png");
+                sound("Game_puzzle/Music/red.wav");
+                detailComponents();
+                f.setVisible(true);
+            } else {
+                System.exit(0);
+            }
         } catch (Exception e) {
             // System.out.println(e + "wdwd");
         }
-        detailComponents();
-        sound("Game_puzzle/Music/red.wav");
-        f.setVisible(true);
     }
 
     private void detailComponents() {
-        
-
         // declare
-        
         lbNameGame = new JLabel("Puzzle of Happiness", SwingConstants.CENTER);
         btnMenu = new JButton("Main Menu");
         btnNewGame = new JButton("New Game");
@@ -116,10 +121,7 @@ public class App extends modeGamePlay {
         btnpuzzle = new JButton[tables];
         btnSubmit = new JButton("Submit");
         tfAnswer = new JTextField("", 20);
-        
-        btnSound  = new JButton(unmute);
-        
-        
+        btnSound = new JButton(imgUnmute);
         lifeSave = life;
 
         // Set size
@@ -130,7 +132,7 @@ public class App extends modeGamePlay {
         btnSubmit.setPreferredSize(new Dimension(150, 20));
         btnMenu.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
-        lbScore.setPreferredSize(new Dimension(210, 50));
+        lbScore.setPreferredSize(new Dimension(220, 50));
         btnSound.setPreferredSize(new Dimension(40, 40));
 
         // add variable into frame
@@ -166,61 +168,22 @@ public class App extends modeGamePlay {
         newGame();
     }
 
-    public void playBGM(String bgm){
-
-
-        try{
-            file = new File(bgm);
-            audioInput = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
-            if(BGM_ON==true){
-               audioInput.close();
-               clip.close();
-               clip.stop();
-            }
-            else{
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-                BGM_ON=true;
-
-            }
-
-
-
-       } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1){
-
-       }
-        BGM_ON=true;
-
-
- }
-
     // function new game
     public void newGame() {
         life = lifeSave;
         cnt = 0;
         score = 0;
         guess = 0;
-        createPuzzle();
         play();
-        if (mode == "Easy"){
-            modeEasy();
-            playBGM("Game_puzzle/Music/Cute.wav");
-        }
-            
-        else if (mode == "Normal"){
-            modeNormal();
-            playBGM("Game_puzzle/Music/Cute.wav");
-        }
-            
-        else if (mode == "Hard"){
-            modeHard();
-            playBGM("Game_puzzle/Music/Cute.wav");
-        }
-            
+        createPuzzle();
+    }
+
+    // function play
+    protected void play() {
+        // show score, guess and life
+        lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life + "\n Mode: " + mode); //
+        tfAnswer.setText(""); // clear the answer
+
     }
 
     // function createPuzzle
@@ -234,34 +197,53 @@ public class App extends modeGamePlay {
             modeNormal();
         else if (mode == "Hard")
             modeHard();
+        playBGM("Game_puzzle/Music/Cute.wav");
     }
 
-    // function play
-    protected void play() {
-        // show score, guess and life
-        lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life + "\n Mode: " + mode); //
-        tfAnswer.setText(""); // clear the answer
-
+    // fuction show the hidden picture
+    private Icon imgPuzzle(int idx) {
+        String srcImg = "";
+        if (mode == "Easy") {
+            return imgEasy[idx];
+        } else if (mode == "Normal") {
+            return imgNormalHard[idx];
+        } else if (mode == "Hard") {
+            return imgNormalHard[idx];
+        }
+        Icon img = new ImageIcon(srcImg);
+        return img;
     }
 
     // function Game Over
     protected void gameOver() {
         clip.stop();
-        BGM_ON=false;
+        BGM_ON = false;
         sound("Game_puzzle/Music/GOV.wav");
         String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\n Mode: " + mode;
         JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
         newGame();
     }
 
+    // function random question
     private void random() {
         Random random = new Random();
-        int a = random.nextInt(10);
-        int b = random.nextInt(10);
-        question = a + " + " + b + " = ?";
-        answerrr = a + b;
+        int a = random.nextInt(12);
+        int b = random.nextInt(12);
+        // int c = random.nextInt(10);
+        int op = random.nextInt(3);
+        if (op == 0) {
+            question = a + " + " + b + " = ?";
+            answerrr = a + b;
+        } else if (op == 1) {
+            question = a + " - " + b + " = ?";
+            answerrr = a - b;
+        } else if (op == 2) {
+            question = a + " x " + b + " = ?";
+            answerrr = a * b;
+        }
     }
 
+    // function show the question
     private void quiz(int idx) {
         random();
         // Question
@@ -290,19 +272,7 @@ public class App extends modeGamePlay {
         }
     }
 
-    private Icon imgPuzzle(int idx) {
-        String srcImg = "";
-        if (mode == "Easy") {
-            return imgEasy[idx];
-        } else if (mode == "Normal") {
-            return imgNormalHard[idx];
-        } else if (mode == "Hard") {
-            return imgNormalHard[idx];
-        }
-        Icon img = new ImageIcon(srcImg);
-        return img;
-    }
-
+    // function sound
     public void sound(String srcSound) {
         try {
             File file = new File(srcSound);
@@ -312,6 +282,30 @@ public class App extends modeGamePlay {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-25.0f); // Reduce volume by 25 decibels. (-80 - 6)
             clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+
+        }
+    }
+
+    // function background music
+    public void playBGM(String bgm) {
+        try {
+            file = new File(bgm);
+            audioInput = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-25.0f); // Reduce volume by 10 decibels.
+            if (BGM_ON == true) {
+                audioInput.close();
+                clip.close();
+                clip.stop();
+            } else {
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                BGM_ON = true;
+            }
+
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 
         }
@@ -334,6 +328,7 @@ public class App extends modeGamePlay {
                 for (int idx = 0; idx < tables; idx++) {
                     btnpuzzle[idx].setIcon(imgPuzzle(idx));
                 }
+                play();
             }
             // Live end
             else if (life < 1) {
@@ -341,6 +336,7 @@ public class App extends modeGamePlay {
                 sound("Game_puzzle/Music/lose.wav");
                 gameOver();
             } else {
+                // check the answer
                 if (s.toUpperCase().equals(showAnswer())) {
                     cnt = 0;
                     score++;
@@ -367,7 +363,7 @@ public class App extends modeGamePlay {
             try {
                 if (source == btnMenu) {
                     clip.stop();
-                    BGM_ON=false;
+                    BGM_ON = false;
                     f.remove(lbNameGame);
                     for (int i = 0; i < tables; i++) {
                         f.remove(btnpuzzle[i]);
@@ -378,21 +374,23 @@ public class App extends modeGamePlay {
                     f.remove(btnMenu);
                     f.remove(btnNewGame);
                     f.remove(btnSound);
+                    isSelectMode = false;
                     selectedMode();
                 }
                 if (source == btnNewGame) {
                     clip.stop();
-                    BGM_ON=false;
+                    BGM_ON = false;
+                    Ismute = false;
+                    btnSound.setIcon(imgUnmute);
                     newGame();
                 }
                 if (source == btnSound) {
                     if(Ismute==false){
-                        btnSound.setIcon(mute);
+                        btnSound.setIcon(imgMute);
                         Ismute=true;
                     }
-                    
                     else{
-                        btnSound.setIcon(unmute);
+                        btnSound.setIcon(imgUnmute);
                         Ismute=false;
                     }
                     if(BGM_ON==true){
@@ -432,7 +430,7 @@ public class App extends modeGamePlay {
                     quiz(8);
                 }
             } catch (Exception e) {
-                // System.out.println(e);
+
             }
         }
     }

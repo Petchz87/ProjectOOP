@@ -10,7 +10,7 @@ public class modeGamePlay {
     protected Icon[] imgNormalHard = new Icon[9];
     String[] puzzle = { "ALLIGATOR", "BIRD", "CAT", "CHICKEN", "DINOSAUR", "DOG", "DUCK", "FOX", "PIG", "SNAKE", "WOLF"};
     String[] puzzle2 = { "BEAR", "DUCK", "ELEPHANT", "FISH", "HORSE", "JELLYFISH", "MONKEY", "PANDA", "PIG", "POLAR", "SHEEP"}; 
-    String[] puzzle3 = {"CAMEL", "CAT", "CLAM", "COW", "DOG", "DOPHIN", "ORCA", "HUMAN", "PENGUIN", "PENGUIN2", "TIGER"};
+    String[] puzzle3 = {"CAMEL", "CAT", "CLAM", "COW", "DOG", "DOPHIN", "ORCA", "HUMAN", "PENGUIN", "TIGER"};
     //Other
     protected String answer;
     protected int tables;
@@ -36,7 +36,7 @@ public class modeGamePlay {
     }
 
     public void modeHard(){
-        int rd = (int) (Math.random() * 10);
+        int rd = (int) (Math.random() * 9);
         
         for (int i = 0; i < tables; i++) {
             if(i % 2 == 0){
