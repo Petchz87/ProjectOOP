@@ -50,6 +50,9 @@ public class App extends modeGamePlay {
     private File file;
     private AudioInputStream audioInput;
     private Clip clip;
+    private ImageIcon unmute = new ImageIcon("Game_puzzle/picture/background/unmute.png");
+    private ImageIcon mute = new ImageIcon("Game_puzzle/picture/background/mute.png");
+    private Boolean Ismute = false;
 
     public App() {
         f = new JFrame("Game Puzzle");
@@ -102,8 +105,10 @@ public class App extends modeGamePlay {
     }
 
     private void detailComponents() {
+        
 
         // declare
+        
         lbNameGame = new JLabel("Puzzle of Happiness", SwingConstants.CENTER);
         btnMenu = new JButton("Main Menu");
         btnNewGame = new JButton("New Game");
@@ -111,7 +116,10 @@ public class App extends modeGamePlay {
         btnpuzzle = new JButton[tables];
         btnSubmit = new JButton("Submit");
         tfAnswer = new JTextField("", 20);
-        btnSound  = new JButton("Mute BGM");
+        
+        btnSound  = new JButton(unmute);
+        
+        
         lifeSave = life;
 
         // Set size
@@ -122,8 +130,8 @@ public class App extends modeGamePlay {
         btnSubmit.setPreferredSize(new Dimension(150, 20));
         btnMenu.setPreferredSize(new Dimension(100, 50));
         btnNewGame.setPreferredSize(new Dimension(100, 50));
-        lbScore.setPreferredSize(new Dimension(200, 50));
-        btnSound.setPreferredSize(new Dimension(25, 25));
+        lbScore.setPreferredSize(new Dimension(210, 50));
+        btnSound.setPreferredSize(new Dimension(40, 40));
 
         // add variable into frame
         f.setLayout(new FlowLayout());
@@ -378,6 +386,15 @@ public class App extends modeGamePlay {
                     newGame();
                 }
                 if (source == btnSound) {
+                    if(Ismute==false){
+                        btnSound.setIcon(mute);
+                        Ismute=true;
+                    }
+                    
+                    else{
+                        btnSound.setIcon(unmute);
+                        Ismute=false;
+                    }
                     if(BGM_ON==true){
                         clip.stop();
                         BGM_ON=false;
