@@ -69,7 +69,6 @@ public class App extends modeGamePlay {
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, modes, modes[0]);
 
             if (selectedMode == 0) {
-                modeEasy();
                 mode = "Easy";
                 tables = 4;
                 life = 5;
@@ -77,7 +76,6 @@ public class App extends modeGamePlay {
                 height = 200;
                 System.out.println("Easy mode");
             } else if (selectedMode == 1) {
-                modeNormal();
                 mode = "Normal";
                 tables = 9;
                 life = 4;
@@ -85,7 +83,6 @@ public class App extends modeGamePlay {
                 height = 134;
                 System.out.println("Normal mode");
             } else if (selectedMode == 2) {
-                modeHard();
                 mode = "Hard";
                 tables = 9;
                 life = 3;
@@ -97,7 +94,7 @@ public class App extends modeGamePlay {
             imgBackground = new ImageIcon("Game_puzzle/picture/background/image_part_001.jpg");
 
         } catch (Exception e) {
-            System.out.println(e);
+            // System.out.println(e + "wdwd");
         }
         detailComponents();
         sound("Game_puzzle/Music/red.wav");
@@ -376,13 +373,9 @@ public class App extends modeGamePlay {
                     selectedMode();
                 }
                 if (source == btnNewGame) {
-                    
-                        clip.stop();
-                        BGM_ON=false;
-                        newGame();
-                    
-                    
-
+                    clip.stop();
+                    BGM_ON=false;
+                    newGame();
                 }
                 if (source == btnSound) {
                     if(BGM_ON==true){
@@ -393,8 +386,6 @@ public class App extends modeGamePlay {
                         clip.start();
                         BGM_ON=true;
                     }
-
-                    
                 }
                 if ((source == btnpuzzle[0]) && (cnt != tables)) {
                     quiz(0);
