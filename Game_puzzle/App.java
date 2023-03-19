@@ -107,9 +107,7 @@ public class App extends modeGamePlay {
             } else {
                 System.exit(0);
             }
-        } catch (Exception e) {
-            // System.out.println(e + "wdwd");
-        }
+        } catch (Exception e) {}
     }
 
     private void detailComponents() {
@@ -166,6 +164,7 @@ public class App extends modeGamePlay {
 
         // Play game
         newGame();
+        playBGM("Game_puzzle/Music/Cute.wav");
     }
 
     // function new game
@@ -176,6 +175,10 @@ public class App extends modeGamePlay {
         guess = 0;
         play();
         createPuzzle();
+        if(Ismute == true) {
+            btnSound.setIcon(imgUnmute);
+            Ismute = false;
+        }
     }
 
     // function play
@@ -183,7 +186,6 @@ public class App extends modeGamePlay {
         // show score, guess and life
         lbScore.setText("Score: " + score + "\n Guess: " + guess + "\n Life: " + life + "\n Mode: " + mode); //
         tfAnswer.setText(""); // clear the answer
-
     }
 
     // function createPuzzle
@@ -197,7 +199,6 @@ public class App extends modeGamePlay {
             modeNormal();
         else if (mode == "Hard")
             modeHard();
-        playBGM("Game_puzzle/Music/Cute.wav");
     }
 
     // fuction show the hidden picture
@@ -216,12 +217,16 @@ public class App extends modeGamePlay {
 
     // function Game Over
     protected void gameOver() {
-        clip.stop();
-        BGM_ON = false;
+        if (BGM_ON == true) {
+            clip.stop();
+            BGM_ON = false;
+        }
         sound("Game_puzzle/Music/GOV.wav");
-        String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\n Mode: " + mode;
-        JOptionPane.showMessageDialog(null, gg, "Thank for playing!", 2);
+        String gg = "Game Over!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\nMode: " + mode
+                + "\nThanks for playing :)";
+        JOptionPane.showMessageDialog(null, gg, "Nice Try", 2);
         newGame();
+        playBGM("Game_puzzle/Music/Cute.wav");
     }
 
     // function random question
@@ -262,9 +267,6 @@ public class App extends modeGamePlay {
                 life--;
                 JOptionPane.showMessageDialog(null, "You're Wrong!!!\nPlease input the answer again.", "The Answer", 1);
                 play();
-                if (life < 1) {
-                    gameOver();
-                }
             }
 
         } catch (Exception e) {
@@ -282,9 +284,7 @@ public class App extends modeGamePlay {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-25.0f); // Reduce volume by 25 decibels. (-80 - 6)
             clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-
-        }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {}
     }
 
     // function background music
@@ -305,10 +305,8 @@ public class App extends modeGamePlay {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 BGM_ON = true;
             }
-
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-
-        }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {}
+        BGM_ON = true;
     }
 
     // class for check the answer
@@ -317,11 +315,19 @@ public class App extends modeGamePlay {
             String s = tfAnswer.getText();
             // for test
             if (score > 4) {
-                JOptionPane.showMessageDialog(null, "Congrat!!!", "V good", 1);
+                if (BGM_ON == true) {
+                    clip.stop();
+                    BGM_ON = false;
+                }
                 sound("Game_puzzle/Music/Win.wav");
+                String gg = "Congratulation!!!\n" + "YourScore: " + score + "\nGuess: " + guess + "\nMode: " + mode
+                        + "\nThanks for playing :)";
+                JOptionPane.showMessageDialog(null, gg, "You Win :)", 3);
+                clip.stop();
                 newGame();
+                playBGM("Game_puzzle/Music/Cute.wav");
             } else if (s.toUpperCase().equals("HACK")) {
-                JOptionPane.showMessageDialog(null, answer, "Cheat", 3);
+                JOptionPane.showMessageDialog(null, answer, "Cheat on", 3);
                 life = 99;
                 play();
             } else if (s.toUpperCase().equals("SHOWALL")) {
@@ -332,25 +338,34 @@ public class App extends modeGamePlay {
             }
             // Live end
             else if (life < 1) {
-                JOptionPane.showMessageDialog(null, "Nice Try", "New Game please!!", 1); // popup
-                sound("Game_puzzle/Music/lose.wav");
                 gameOver();
             } else {
                 // check the answer
                 if (s.toUpperCase().equals(showAnswer())) {
                     cnt = 0;
                     score++;
-                    JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
+                    if (score > 4) {
+                        if (BGM_ON == true) {
+                            clip.stop();
+                            BGM_ON = false;
+                        }
+                    }
                     sound("Game_puzzle/Music/correct.wav");
+                    JOptionPane.showMessageDialog(null, "You're Correct!!!", "The Answer", 1); // popup
                     createPuzzle();
                     play();
                 } else if (!s.toUpperCase().equals(showAnswer()) && !s.equals("")) {
                     life--;
-                    JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
+                    if (score > 4) {
+                            clip.stop();
+                        if (BGM_ON == true) {
+                            BGM_ON = false;
+                        }
+                    }
                     sound("Game_puzzle/Music/wrong.wav");
+                    JOptionPane.showMessageDialog(null, "You're Wrong!!!", "The Answer", 1);
                     play();
                 }
-
             }
         }
     }
@@ -375,31 +390,26 @@ public class App extends modeGamePlay {
                     f.remove(btnNewGame);
                     f.remove(btnSound);
                     isSelectMode = false;
+                    Ismute = false;
                     selectedMode();
                 }
                 if (source == btnNewGame) {
-                    clip.stop();
-                    BGM_ON = false;
-                    Ismute = false;
-                    btnSound.setIcon(imgUnmute);
                     newGame();
                 }
                 if (source == btnSound) {
-                    if(Ismute==false){
+                    if (Ismute == false) {
                         btnSound.setIcon(imgMute);
-                        Ismute=true;
-                    }
-                    else{
+                        Ismute = true;
+                    } else {
                         btnSound.setIcon(imgUnmute);
-                        Ismute=false;
+                        Ismute = false;
                     }
-                    if(BGM_ON==true){
+                    if (BGM_ON == true) {
                         clip.stop();
-                        BGM_ON=false;
-                    }
-                    else{
+                        BGM_ON = false;
+                    } else {
                         clip.start();
-                        BGM_ON=true;
+                        BGM_ON = true;
                     }
                 }
                 if ((source == btnpuzzle[0]) && (cnt != tables)) {
@@ -429,9 +439,7 @@ public class App extends modeGamePlay {
                 if ((source == btnpuzzle[8]) && (cnt != tables)) {
                     quiz(8);
                 }
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
     }
 }
